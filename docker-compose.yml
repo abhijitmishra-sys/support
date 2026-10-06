@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: irma
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+      POSTGRES_DB: irma_support
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U irma -d irma_support"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    volumes: ["redis_data:/data"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  migrate:
+    build: ./backend
+    command: node node_modules/prisma/build/index.js migrate deploy
+    env_file: ./backend/.env
+    depends_on:
+      postgres: { condition: service_healthy }
+  api:
+    build: ./backend
+    env_file: ./backend/.env
+    environment: { REDIS_URL: "redis://redis:6379" }
+    ports: ["127.0.0.1:4100:4100"]
+    volumes: ["attachments:/app/uploads"]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+    restart: unless-stopped
+  worker:
+    build: ./backend
+    command: node src/worker.js
+    env_file: ./backend/.env
+    environment: { REDIS_URL: "redis://redis:6379" }
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+    restart: unless-stopped
+volumes:
+  postgres_data:
+  redis_data:
+  attachments:

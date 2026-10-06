@@ -1,0 +1,9 @@
+node_modules
+.env
+.env.*
+uploads
+.test-db
+coverage
+test
+*.dump
+*.log

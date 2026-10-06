@@ -1,0 +1,7 @@
+{
+  "name": "irma-support-api", "version": "1.0.0", "private": true, "type": "module",
+  "engines": { "node": ">=22.13" },
+  "scripts": { "start": "node src/server.js", "worker": "node src/worker.js", "generate": "prisma generate", "migrate": "prisma migrate deploy", "seed": "node prisma/seed.js", "test": "node --test test/*.test.js", "test:integration": "node test/integration.js" },
+  "dependencies": { "@prisma/client": "6.19.3", "prisma": "6.19.3", "express": "^5.1.0", "helmet": "^8.1.0", "cors": "^2.8.5", "express-rate-limit": "^8.1.0", "socket.io": "^4.8.1", "@socket.io/redis-adapter": "^8.3.0", "redis": "^5.8.0", "zod": "^3.25.76", "luxon": "^3.7.2", "file-type": "^21.0.0", "nodemailer": "^7.0.6", "pino": "^9.9.0" },
+  "devDependencies": { "@electric-sql/pglite": "^0.3.10", "@electric-sql/pglite-socket": "^0.0.11" }
+}

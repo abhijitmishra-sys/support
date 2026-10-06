@@ -1,0 +1,1737 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "IRMA Support API",
+    "version": "1.0.0",
+    "description": "API route inventory. Request-field contracts are described in contracts.md; this initial spec does not provide exhaustive field-level schemas."
+  },
+  "servers": [
+    {
+      "url": "https://your-node-api.example.com"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "GatewayIdentity": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-IRMA-Identity",
+        "description": "Server-generated HMAC signed identity; never browser-generated."
+      }
+    }
+  },
+  "paths": {
+    "/health/live": {
+      "get": {
+        "summary": "GET /health/live",
+        "operationId": "get_health_live",
+        "tags": [
+          "Operations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        }
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "summary": "GET /health/ready",
+        "operationId": "get_health_ready",
+        "tags": [
+          "Operations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        }
+      }
+    },
+    "/integrations/inbound": {
+      "post": {
+        "summary": "POST /integrations/inbound",
+        "operationId": "post_integrations_inbound",
+        "tags": [
+          "Operations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me": {
+      "get": {
+        "summary": "GET /v1/me",
+        "operationId": "get_v1_me",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ]
+      }
+    },
+    "/v1/tickets": {
+      "get": {
+        "summary": "GET /v1/tickets",
+        "operationId": "get_v1_tickets",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "POST /v1/tickets",
+        "operationId": "post_v1_tickets",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tickets/{id}": {
+      "get": {
+        "summary": "GET /v1/tickets/{id}",
+        "operationId": "get_v1_tickets_id",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "summary": "PATCH /v1/tickets/{id}",
+        "operationId": "patch_v1_tickets_id",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tickets/{id}/messages": {
+      "post": {
+        "summary": "POST /v1/tickets/{id}/messages",
+        "operationId": "post_v1_tickets_id_messages",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tickets/{id}/merge": {
+      "post": {
+        "summary": "POST /v1/tickets/{id}/merge",
+        "operationId": "post_v1_tickets_id_merge",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tickets/{id}/escalate": {
+      "post": {
+        "summary": "POST /v1/tickets/{id}/escalate",
+        "operationId": "post_v1_tickets_id_escalate",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tickets/{id}/watch": {
+      "post": {
+        "summary": "POST /v1/tickets/{id}/watch",
+        "operationId": "post_v1_tickets_id_watch",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tickets/{id}/read": {
+      "post": {
+        "summary": "POST /v1/tickets/{id}/read",
+        "operationId": "post_v1_tickets_id_read",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tickets/{id}/feedback": {
+      "post": {
+        "summary": "POST /v1/tickets/{id}/feedback",
+        "operationId": "post_v1_tickets_id_feedback",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tickets/{id}/attachments": {
+      "post": {
+        "summary": "POST /v1/tickets/{id}/attachments",
+        "operationId": "post_v1_tickets_id_attachments",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/attachments/{id}": {
+      "get": {
+        "summary": "GET /v1/attachments/{id}",
+        "operationId": "get_v1_attachments_id",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/notifications": {
+      "get": {
+        "summary": "GET /v1/notifications",
+        "operationId": "get_v1_notifications",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ]
+      }
+    },
+    "/v1/notifications/read": {
+      "patch": {
+        "summary": "PATCH /v1/notifications/read",
+        "operationId": "patch_v1_notifications_read",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/preferences": {
+      "patch": {
+        "summary": "PATCH /v1/preferences",
+        "operationId": "patch_v1_preferences",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/team": {
+      "get": {
+        "summary": "GET /v1/team",
+        "operationId": "get_v1_team",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ]
+      }
+    },
+    "/v1/availability": {
+      "patch": {
+        "summary": "PATCH /v1/availability",
+        "operationId": "patch_v1_availability",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/heartbeat": {
+      "post": {
+        "summary": "POST /v1/heartbeat",
+        "operationId": "post_v1_heartbeat",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ]
+      }
+    },
+    "/v1/articles": {
+      "get": {
+        "summary": "GET /v1/articles",
+        "operationId": "get_v1_articles",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "POST /v1/articles",
+        "operationId": "post_v1_articles",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/canned": {
+      "get": {
+        "summary": "GET /v1/canned",
+        "operationId": "get_v1_canned",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "POST /v1/canned",
+        "operationId": "post_v1_canned",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/reports": {
+      "get": {
+        "summary": "GET /v1/reports",
+        "operationId": "get_v1_reports",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ]
+      }
+    },
+    "/v1/export": {
+      "get": {
+        "summary": "GET /v1/export",
+        "operationId": "get_v1_export",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ]
+      }
+    },
+    "/v1/admin": {
+      "get": {
+        "summary": "GET /v1/admin",
+        "operationId": "get_v1_admin",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ]
+      }
+    },
+    "/v1/admin/settings": {
+      "patch": {
+        "summary": "PATCH /v1/admin/settings",
+        "operationId": "patch_v1_admin_settings",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/teams": {
+      "post": {
+        "summary": "POST /v1/admin/teams",
+        "operationId": "post_v1_admin_teams",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/members/{id}": {
+      "patch": {
+        "summary": "PATCH /v1/admin/members/{id}",
+        "operationId": "patch_v1_admin_members_id",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/invitations": {
+      "post": {
+        "summary": "POST /v1/admin/invitations",
+        "operationId": "post_v1_admin_invitations",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Validated fields and limits are documented in contracts.md and backend/src/app.js."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/socket-session": {
+      "post": {
+        "summary": "POST /v1/socket-session",
+        "operationId": "post_v1_socket_session",
+        "tags": [
+          "Support"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request; most JSON responses use {data: ...}."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing/invalid/expired identity"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "404": {
+            "description": "Not found or inaccessible"
+          },
+          "409": {
+            "description": "Version/idempotency conflict"
+          },
+          "422": {
+            "description": "Schema or business validation failure"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          },
+          "201": {
+            "description": "Created, where applicable"
+          }
+        },
+        "security": [
+          {
+            "GatewayIdentity": []
+          }
+        ]
+      }
+    }
+  }
+}

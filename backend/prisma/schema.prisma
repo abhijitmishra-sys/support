@@ -1,0 +1,272 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+enum Role {
+  CUSTOMER
+  AGENT
+  SUPERVISOR
+  ADMIN
+}
+enum Tier {
+  ESSENTIAL
+  GROWTH
+  PRIORITY
+  ELITE
+}
+enum Status {
+  OPEN
+  IN_PROGRESS
+  WAITING_CUSTOMER
+  WAITING_INTERNAL
+  RESOLVED
+  CLOSED
+  REOPENED
+}
+enum Urgency {
+  LOW
+  NORMAL
+  HIGH
+  CRITICAL
+}
+model Workspace {
+  id String @id
+  name String
+  settings Json
+  version Int @default(1)
+  memberships Membership[]
+  teams Team[]
+  tickets Ticket[]
+  notifications Notification[]
+  audits Audit[]
+  articles Article[]
+  cannedResponses CannedResponse[]
+  outbox Outbox[]
+}
+model User {
+  id String @id @default(uuid())
+  externalId String @unique
+  email String
+  name String
+  createdAt DateTime @default(now())
+  memberships Membership[]
+  requested Ticket[] @relation("Requester")
+  assigned Ticket[] @relation("Assignee")
+  messages Message[]
+  notifications Notification[]
+  watches Watcher[]
+  feedback Feedback[]
+  passwordCredential PasswordCredential?
+  sessions AuthSession[]
+}
+model PasswordCredential {
+  userId String @id
+  email String @unique
+  passwordHash String
+  user User @relation(fields:[userId], references:[id], onDelete: Cascade)
+}
+model AuthSession {
+  tokenHash String @id
+  userId String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user User @relation(fields:[userId], references:[id], onDelete: Cascade)
+  @@index([expiresAt])
+  @@index([userId])
+}
+model Membership {
+  id String @id @default(uuid())
+  workspaceId String
+  userId String
+  role Role @default(CUSTOMER)
+  tier Tier @default(ESSENTIAL)
+  organizationAccess Boolean @default(false)
+  available Boolean @default(false)
+  heartbeatAt DateTime?
+  capacity Int @default(5)
+  skills String[] @default([])
+  notificationEmail Boolean @default(false)
+  teamId String?
+  workspace Workspace @relation(fields:[workspaceId], references:[id])
+  user User @relation(fields:[userId], references:[id])
+  team Team? @relation(fields:[teamId], references:[id])
+  @@unique([workspaceId,userId])
+  @@index([workspaceId,role,available])
+}
+model Team {
+  id String @id @default(uuid())
+  workspaceId String
+  name String
+  workspace Workspace @relation(fields:[workspaceId], references:[id])
+  memberships Membership[]
+  tickets Ticket[]
+  @@unique([workspaceId,name])
+}
+model Ticket {
+  id String @id @default(uuid())
+  sequence Int @unique @default(autoincrement())
+  workspaceId String
+  requesterId String
+  assigneeId String?
+  teamId String?
+  subject String
+  description String
+  category String
+  urgency Urgency @default(NORMAL)
+  tier Tier
+  status Status @default(OPEN)
+  tags String[] @default([])
+  version Int @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  resolvedAt DateTime?
+  resolution String?
+  archivedAt DateTime?
+  mergedIntoId String?
+  relatedIds String[] @default([])
+  workspace Workspace @relation(fields:[workspaceId],references:[id])
+  requester User @relation("Requester",fields:[requesterId],references:[id])
+  assignee User? @relation("Assignee",fields:[assigneeId],references:[id])
+  team Team? @relation(fields:[teamId],references:[id])
+  mergedInto Ticket? @relation("Merged",fields:[mergedIntoId],references:[id])
+  mergedTickets Ticket[] @relation("Merged")
+  messages Message[]
+  attachments Attachment[]
+  cycles SlaCycle[]
+  watchers Watcher[]
+  feedback Feedback?
+  @@index([workspaceId,archivedAt,status,tier,createdAt])
+  @@index([workspaceId,requesterId,createdAt])
+  @@index([workspaceId,assigneeId,status])
+}
+model SlaCycle {
+  id String @id @default(uuid())
+  ticketId String
+  kind String @default("FIRST_RESPONSE")
+  startedAt DateTime
+  dueAt DateTime
+  respondedAt DateTime?
+  breachedAt DateTime?
+  warnedAt DateTime?
+  pausedAt DateTime?
+  remainingMinutes Float?
+  policy Json
+  ticket Ticket @relation(fields:[ticketId],references:[id])
+  @@index([respondedAt,dueAt])
+}
+model Message {
+  id String @id @default(uuid())
+  ticketId String
+  authorId String
+  body String
+  private Boolean @default(false)
+  createdAt DateTime @default(now())
+  clientId String
+  ticket Ticket @relation(fields:[ticketId],references:[id])
+  author User @relation(fields:[authorId],references:[id])
+  attachments Attachment[]
+  @@unique([ticketId,authorId,clientId])
+  @@index([ticketId,createdAt])
+}
+model Attachment {
+  id String @id @default(uuid())
+  ticketId String
+  messageId String?
+  fileName String
+  mime String
+  size Int
+  storageKey String @unique
+  uploaderId String
+  private Boolean @default(false)
+  scanStatus String
+  createdAt DateTime @default(now())
+  ticket Ticket @relation(fields:[ticketId],references:[id])
+  message Message? @relation(fields:[messageId],references:[id])
+  @@index([ticketId])
+}
+model Watcher {
+  ticketId String
+  userId String
+  lastReadAt DateTime?
+  ticket Ticket @relation(fields:[ticketId],references:[id])
+  user User @relation(fields:[userId],references:[id])
+  @@id([ticketId,userId])
+}
+model Notification {
+  id String @id @default(uuid())
+  workspaceId String
+  userId String
+  ticketId String?
+  title String
+  type String
+  readAt DateTime?
+  emailSentAt DateTime?
+  emailAttempts Int @default(0)
+  createdAt DateTime @default(now())
+  workspace Workspace @relation(fields:[workspaceId],references:[id])
+  user User @relation(fields:[userId],references:[id])
+  @@index([workspaceId,userId,readAt,createdAt])
+}
+model Audit {
+  id String @id @default(uuid())
+  workspaceId String
+  ticketId String?
+  actorId String?
+  action String
+  data Json
+  createdAt DateTime @default(now())
+  workspace Workspace @relation(fields:[workspaceId],references:[id])
+  @@index([workspaceId,ticketId,createdAt])
+}
+model Feedback {
+  id String @id @default(uuid())
+  ticketId String @unique
+  userId String
+  rating Int
+  comment String?
+  createdAt DateTime @default(now())
+  ticket Ticket @relation(fields:[ticketId],references:[id])
+  user User @relation(fields:[userId],references:[id])
+}
+model Article {
+  id String @id @default(uuid())
+  workspaceId String
+  title String
+  body String
+  category String
+  published Boolean @default(false)
+  updatedAt DateTime @updatedAt
+  workspace Workspace @relation(fields:[workspaceId],references:[id])
+  @@index([workspaceId,published])
+}
+model CannedResponse {
+  id String @id @default(uuid())
+  workspaceId String
+  title String
+  body String
+  workspace Workspace @relation(fields:[workspaceId],references:[id])
+}
+model Idempotency {
+  workspaceId String
+  userId String
+  key String
+  hash String
+  resultId String
+  @@id([workspaceId,userId,key])
+}
+model Outbox {
+  id String @id @default(uuid())
+  workspaceId String
+  type String
+  payload Json
+  createdAt DateTime @default(now())
+  dispatchedAt DateTime?
+  attempts Int @default(0)
+  availableAt DateTime @default(now())
+  error String?
+  workspace Workspace @relation(fields:[workspaceId],references:[id])
+  @@index([dispatchedAt,availableAt])
+}
